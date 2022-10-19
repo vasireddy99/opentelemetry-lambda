@@ -21,8 +21,11 @@ import software.amazon.awssdk.services.s3.model.ListBucketsResponse;
 public class AwsSdkRequestHandler
     implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
+  // Declare metric variables
   public static long queueSizeChange;
   public static long apiBytesSent;
+  public static long totalBytesSent;
+
   private static final Logger logger = LogManager.getLogger(AwsSdkRequestHandler.class);
   private static final Meter meter =
       GlobalOpenTelemetry.getMeterProvider()
@@ -42,6 +45,14 @@ public class AwsSdkRequestHandler
           .setUnit("one")
           .buildWithCallback(measurement -> measurement.record(queueSizeChange, METRIC_ATTRIBUTES));
 
+  // building synchronous request-based counter metric
+  private static final ObservableLongCounter testCounter =
+      meter
+          .counterBuilder("apiBytesSentMetricName")
+          .setDescription("API request load sent in bytes")
+          .setUnit("1")
+          .buildWithCallback(measurement -> measurement.record(apiBytesSent, METRIC_ATTRIBUTES));
+
   private static final ObservableLongGauge totalApiBytesSentMetric =
       meter
           .gaugeBuilder("totalApiBytesSentMetricName")
@@ -50,16 +61,8 @@ public class AwsSdkRequestHandler
           .ofLongs()
           .buildWithCallback(
               measurement -> {
-                measurement.record(queueSizeChange, METRIC_ATTRIBUTES);
+                measurement.record(totalBytesSent, METRIC_ATTRIBUTES);
               });
-
-  // building synchronous request-based counter metric
-  private static final ObservableLongCounter testCounter =
-      meter
-          .counterBuilder("apiBytesSentMetricName")
-          .setDescription("API request load sent in bytes")
-          .setUnit("1")
-          .buildWithCallback(measurement -> measurement.record(apiBytesSent, METRIC_ATTRIBUTES));
 
   // building histogram request-based metric
   private static final DoubleHistogram latencyMetric =
@@ -82,8 +85,9 @@ public class AwsSdkRequestHandler
     }
 
     // Generate sample metrics using OTel-Java
-    apiBytesSent = input.toString().length() + ThreadLocalRandom.current().nextLong(100);
     queueSizeChange = ThreadLocalRandom.current().nextLong(100);
+    apiBytesSent = input.toString().length() + ThreadLocalRandom.current().nextLong(100);
+    totalBytesSent = +apiBytesSent;
     latencyMetric.record(System.currentTimeMillis(), METRIC_ATTRIBUTES);
     return response;
   }
