@@ -46,22 +46,22 @@ public class AwsSdkRequestHandler
           .buildWithCallback(measurement -> measurement.record(queueSizeChange, METRIC_ATTRIBUTES));
 
   // building synchronous request-based counter metric
-  private static final ObservableLongCounter testCounter =
+  private static final ObservableLongCounter totalApiBytesSentMetric =
       meter
-          .counterBuilder("apiBytesSentMetricName")
+          .counterBuilder("totalApiBytesSentMetricName")
           .setDescription("API request load sent in bytes")
           .setUnit("1")
-          .buildWithCallback(measurement -> measurement.record(apiBytesSent, METRIC_ATTRIBUTES));
+          .buildWithCallback(measurement -> measurement.record(totalBytesSent, METRIC_ATTRIBUTES));
 
-  private static final ObservableLongGauge totalApiBytesSentMetric =
+  private static final ObservableLongGauge apiBytesSentMetric =
       meter
-          .gaugeBuilder("totalApiBytesSentMetricName")
+          .gaugeBuilder("apiBytesSentMetricName")
           .setDescription("Testing Guage")
           .setUnit("ms")
           .ofLongs()
           .buildWithCallback(
               measurement -> {
-                measurement.record(totalBytesSent, METRIC_ATTRIBUTES);
+                measurement.record(apiBytesSent, METRIC_ATTRIBUTES);
               });
 
   // building histogram request-based metric
@@ -87,7 +87,7 @@ public class AwsSdkRequestHandler
     // Generate sample metrics using OTel-Java
     queueSizeChange = ThreadLocalRandom.current().nextLong(100);
     apiBytesSent = input.toString().length() + ThreadLocalRandom.current().nextLong(100);
-    totalBytesSent = +apiBytesSent;
+    totalBytesSent += apiBytesSent;
     latencyMetric.record(System.currentTimeMillis(), METRIC_ATTRIBUTES);
     return response;
   }
