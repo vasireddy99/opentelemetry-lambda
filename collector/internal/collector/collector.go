@@ -19,13 +19,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/open-telemetry/opentelemetry-collector-contrib/confmap/provider/s3provider"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/confmap"
 	"go.opentelemetry.io/collector/confmap/converter/expandconverter"
 	"go.opentelemetry.io/collector/confmap/provider/envprovider"
 	"go.opentelemetry.io/collector/confmap/provider/fileprovider"
-	"go.opentelemetry.io/collector/confmap/provider/httpprovider"
 	"go.opentelemetry.io/collector/confmap/provider/yamlprovider"
 	"go.opentelemetry.io/collector/otelcol"
 	"go.uber.org/zap"
@@ -57,7 +55,7 @@ func getConfig(logger *zap.Logger) string {
 
 func NewCollector(logger *zap.Logger, factories otelcol.Factories, version string) *Collector {
 	l := logger.Named("NewCollector")
-	providers := []confmap.Provider{fileprovider.New(), envprovider.New(), yamlprovider.New(), httpprovider.New(), s3provider.New()}
+	providers := []confmap.Provider{fileprovider.New(), envprovider.New(), yamlprovider.New()}
 	mapProvider := make(map[string]confmap.Provider, len(providers))
 
 	for _, provider := range providers {
@@ -89,8 +87,8 @@ func NewCollector(logger *zap.Logger, factories otelcol.Factories, version strin
 func (c *Collector) Start(ctx context.Context) error {
 	params := otelcol.CollectorSettings{
 		BuildInfo: component.BuildInfo{
-			Command:     "otelcol-lambda",
-			Description: "Lambda Collector",
+			Command:     "Lambda Collector",
+			Description: "ADOT Lambda Collector",
 			Version:     c.version,
 		},
 		ConfigProvider: c.configProvider,
