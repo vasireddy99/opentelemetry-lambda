@@ -49,7 +49,7 @@ jobs:
         working-directory: collector
   build:
     runs-on: ubuntu-latest
-    needs: [test, tidy]
+    needs: [tidy]
     strategy:
       matrix:
         architecture: [ amd64, arm64 ]
