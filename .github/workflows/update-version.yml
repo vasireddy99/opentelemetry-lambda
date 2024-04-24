@@ -1,0 +1,30 @@
+name: Update Version
+
+on:
+  push:
+    paths:
+      - '**/go.mod'
+    branches:
+      - '*'
+
+jobs:
+  update_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Extract Version
+        id: extract_version
+        run: |
+          version=$(grep -o 'go.opentelemetry.io/collector/otelcol v[0-9.]*' go.mod | awk '{print $2}')
+          echo "Version: $version"
+          echo "$version" > collector/VERSION
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Auto-update version file"
+          git push
