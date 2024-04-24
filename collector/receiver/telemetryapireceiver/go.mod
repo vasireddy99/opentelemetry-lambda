@@ -6,13 +6,13 @@ replace github.com/open-telemetry/opentelemetry-lambda/collector => ../../
 
 require (
 	github.com/golang-collections/go-datastructures v0.0.0-20150211160725-59788d5eb259
-	github.com/open-telemetry/opentelemetry-lambda/collector v0.98.0
+	github.com/open-telemetry/opentelemetry-lambda/collector v0.94.0
 	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/collector/component v0.98.0
-	go.opentelemetry.io/collector/consumer v0.98.0
-	go.opentelemetry.io/collector/pdata v1.5.0
-	go.opentelemetry.io/collector/receiver v0.98.0
-	go.opentelemetry.io/collector/semconv v0.98.0
+	go.opentelemetry.io/collector/component v0.94.1
+	go.opentelemetry.io/collector/consumer v0.94.1
+	go.opentelemetry.io/collector/pdata v1.4.0
+	go.opentelemetry.io/collector/receiver v0.94.1
+	go.opentelemetry.io/collector/semconv v0.97.0
 	go.uber.org/zap v1.27.0
 )
 
@@ -24,12 +24,12 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-viper/mapstructure/v2 v2.0.0-alpha.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/knadh/koanf/maps v0.1.1 // indirect
 	github.com/knadh/koanf/providers/confmap v0.1.0 // indirect
 	github.com/knadh/koanf/v2 v2.1.1 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
+	github.com/mitchellh/mapstructure v1.5.1-0.20231216201459-8508981c8b6c // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
@@ -38,7 +38,7 @@ require (
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.52.2 // indirect
 	github.com/prometheus/procfs v0.12.0 // indirect
-	go.opentelemetry.io/collector/config/configtelemetry v0.98.0 // indirect
+	go.opentelemetry.io/collector/config/configtelemetry v0.94.1 // indirect
 	go.opentelemetry.io/collector/confmap v0.98.0 // indirect
 	go.opentelemetry.io/otel v1.25.0 // indirect
 	go.opentelemetry.io/otel/exporters/prometheus v0.47.0 // indirect
